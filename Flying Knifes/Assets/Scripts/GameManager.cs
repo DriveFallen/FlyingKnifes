@@ -4,10 +4,13 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static int fruitsCount;
+    public static int knifeCount;
+
     [Header("Интерфейс")]
-    [SerializeField] private GameObject PauseFrame;
     [SerializeField] private GameObject GameOverFrame;
     [SerializeField] private GameObject WinFrame;
+    [SerializeField] private Text LevelNumberTXT;
     [SerializeField] private Text KnifeCountTXT;
     [Space]
     [Header("Настройки ножей")]
@@ -16,17 +19,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float fireRate = 1f;
     [SerializeField] private int startKnifeCount = 3;
 
-    public static int fruitsCount;
-    public static int knifeCount;
-
     private float lastFireTime;
     private GameObject newKnife;
-    private bool isPused = false;
 
     private void Start()
     {
         fruitsCount = GameObject.FindGameObjectsWithTag("Fruit").Length;
         knifeCount = startKnifeCount;
+        LevelNumberTXT.text = $"Level: {SceneManager.GetActiveScene().buildIndex}";
 
         lastFireTime = 0;
     }
@@ -34,18 +34,6 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         KnifeCountTXT.text = $"Ножей осталось: {knifeCount}";
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (isPused)
-            {
-                Resume();
-            }
-            else
-            {
-                Pause();
-            }
-        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -74,34 +62,5 @@ public class GameManager : MonoBehaviour
 
             lastFireTime = Time.time;
         }
-    }
-
-    public void Pause()
-    {
-        Time.timeScale = 0f;
-        isPused = true;
-        PauseFrame.SetActive(true);
-    }
-
-    public void Resume()
-    {
-        Time.timeScale = 1f;
-        isPused = false;
-        PauseFrame.SetActive(false);
-    }
-
-    public void NextLVL()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
-
-    public void Restart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void Exit()
-    {
-        Application.Quit();
     }
 }
