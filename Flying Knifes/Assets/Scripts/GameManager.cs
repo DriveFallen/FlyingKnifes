@@ -24,10 +24,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
         fruitsCount = GameObject.FindGameObjectsWithTag("Fruit").Length;
         knifeCount = startKnifeCount;
         LevelNumberTXT.text = $"Level: {SceneManager.GetActiveScene().buildIndex}";
-
         lastFireTime = 0;
     }
 
